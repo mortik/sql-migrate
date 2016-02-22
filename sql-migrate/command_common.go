@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path"
-	"path/filepath"
 	"time"
 
 	"github.com/nicolai86/sql-migrate"
@@ -20,11 +19,7 @@ func GenerateMigrationTemplate(name string) error {
 		Dir: env.Dir,
 	}
 
-	template, err := filepath.Abs("../templates/migration.sql")
-	if err != nil {
-		return fmt.Errorf("Could not read template file: %s", err)
-	}
-	b, err := ioutil.ReadFile(template)
+	template, err := Asset("data/templates/migration.sql")
 	if err != nil {
 		return fmt.Errorf("Could not read template file: %s", err)
 	}
@@ -32,7 +27,7 @@ func GenerateMigrationTemplate(name string) error {
 	timestamp := time.Now().Format("20060102150405")
 	fileName := fmt.Sprintf("%s_%s.sql", timestamp, name)
 	file := path.Join(source.Dir, fileName)
-	err = ioutil.WriteFile(file, b, 0644)
+	err = ioutil.WriteFile(file, template, 0644)
 	if err != nil {
 		return fmt.Errorf("Could not write template file: %s", err)
 	}
