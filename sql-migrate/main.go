@@ -31,6 +31,9 @@ func realMain() int {
 			"status": func() (cli.Command, error) {
 				return &StatusCommand{}, nil
 			},
+			"create": func() (cli.Command, error) {
+				return &CreateCommand{}, nil
+			},
 		},
 		HelpFunc: cli.BasicHelpFunc("sql-migrate"),
 		Version:  "1.0.0",
